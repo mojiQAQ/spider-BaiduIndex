@@ -1,5 +1,7 @@
+# -*- coding: utf8 -*-
+
 from config import COOKIES, PROVINCE_CODE, CITY_CODE
-from urllib.parse import urlencode
+from urllib import urlencode
 from collections import defaultdict
 import datetime
 import requests
@@ -9,7 +11,7 @@ headers = {
     'Host': 'index.baidu.com',
     'Connection': 'keep-alive',
     'X-Requested-With': 'XMLHttpRequest',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 }
 
 
@@ -57,7 +59,9 @@ class BaiduIndex:
             'endDate': end_date,
             'area': self._area,
         }
+        # print request_args
         url = 'http://index.baidu.com/api/SearchApi/index?' + urlencode(request_args)
+        # print "========" + url
         html = self.http_get(url)
         datas = json.loads(html)
         uniqid = datas['data']['uniqid']
@@ -78,7 +82,7 @@ class BaiduIndex:
     def format_data(self, data):
         """
         """
-        keyword = str(data['word'])
+        keyword = data['word'].encode('utf-8')
         time_len = len(data['all']['data'])
         start_date = data['all']['startDate']
         cur_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
